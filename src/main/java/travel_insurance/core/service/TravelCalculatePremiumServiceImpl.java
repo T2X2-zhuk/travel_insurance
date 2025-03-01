@@ -11,12 +11,7 @@ import java.math.BigDecimal;
 @Component
 public class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
 
-
-    private DateTimeService service;
-
-    public TravelCalculatePremiumServiceImpl(DateTimeService service) {
-        this.service = service;
-    }
+    @Autowired private DateTimeService service;
 
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {

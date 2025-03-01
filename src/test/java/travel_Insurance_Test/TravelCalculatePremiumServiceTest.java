@@ -3,6 +3,10 @@ package travel_Insurance_Test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import travel_insurance.core.request.TravelCalculatePremiumRequest;
 import travel_insurance.core.service.DateTimeService;
 import travel_insurance.core.service.TravelCalculatePremiumServiceImpl;
@@ -11,51 +15,45 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class TravelCalculatePremiumServiceTest {
 
-    private DateTimeService dateTimeService;
-    private TravelCalculatePremiumServiceImpl service;
+    @Mock private DateTimeService dateTimeService;
+
+    @InjectMocks private TravelCalculatePremiumServiceImpl service;
+
+    private TravelCalculatePremiumRequest request;
 
     @BeforeEach
     public void setUp() {
-        dateTimeService = new DateTimeService();
-        service = new TravelCalculatePremiumServiceImpl(dateTimeService);
+       request = createRequestWithAllFields();
+        when(dateTimeService.getDaysBetween(request)).thenReturn(0L);
     }
-
-    @org.junit.jupiter.api.Test
+        @org.junit.jupiter.api.Test
     public void shouldPopulatePersonFirstName() {
-        var request = createRequestWithAllFields();
-        var response = service.calculatePremium(request);
-        assertEquals(response.getPersonFirstName(), request.getPersonFirstName());
+        assertEquals(service.calculatePremium(request).getPersonFirstName(),request.getPersonFirstName());
     }
 
     @org.junit.jupiter.api.Test
     public void shouldPopulatePersonLastName() {
-        var request = createRequestWithAllFields();
-        var response = service.calculatePremium(request);
-        assertEquals(response.getPersonLastName(), request.getPersonLastName());
+        assertEquals(service.calculatePremium(request).getPersonLastName(), request.getPersonLastName());
     }
 
     @org.junit.jupiter.api.Test
     public void shouldPopulateAgreementDateFrom() {
-        var request = createRequestWithAllFields();
-        var response = service.calculatePremium(request);
-        assertEquals(response.getAgreementDateFrom(), request.getAgreementDateFrom());
+        assertEquals(service.calculatePremium(request).getAgreementDateFrom(), request.getAgreementDateFrom());
     }
 
     @org.junit.jupiter.api.Test
     public void shouldPopulateAgreementDateTo() {
-        var request = createRequestWithAllFields();
-        var response = service.calculatePremium(request);
-        assertEquals(response.getAgreementDateTo(), request.getAgreementDateTo());
+        assertEquals(service.calculatePremium(request).getAgreementDateTo(), request.getAgreementDateTo());
     }
 
     @Test
     public void shouldPopulateAgreementPrice() {
-        var request = createRequestWithAllFields();
-        var response = service.calculatePremium(request);
-        assertNotNull(response.getAgreementPrice());
+        assertNotNull(service.calculatePremium(request).getAgreementPrice());
     }
 
     private TravelCalculatePremiumRequest createRequestWithAllFields() {
