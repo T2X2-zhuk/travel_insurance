@@ -1,15 +1,22 @@
 package travel_insurance.core.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import travel_insurance.core.jpa.TravelCalculatePremiumService;
 import travel_insurance.core.request.TravelCalculatePremiumRequest;
 import travel_insurance.core.response.TravelCalculatePremiumResponse;
 
 import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
+
+
+    private DateTimeService service;
+
+    public TravelCalculatePremiumServiceImpl(DateTimeService service) {
+        this.service = service;
+    }
 
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {
@@ -19,15 +26,9 @@ public class TravelCalculatePremiumServiceImpl implements TravelCalculatePremium
         response.setAgreementDateFrom(request.getAgreementDateFrom());
         response.setAgreementDateTo(request.getAgreementDateTo());
 
-        var daysBetween = calculateAgreementDurationInDays(request);
+        var daysBetween = service.getDaysBetween(request);
         response.setAgreementPrice(new BigDecimal(daysBetween));
 
         return response;
     }
-
-    private long calculateAgreementDurationInDays(TravelCalculatePremiumRequest request) {
-        long diff = request.getAgreementDateFrom().getTime() - request.getAgreementDateTo().getTime();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-    }
-
 }
