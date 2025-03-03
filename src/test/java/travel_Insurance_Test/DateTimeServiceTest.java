@@ -18,7 +18,8 @@ public class DateTimeServiceTest {
     public void shouldDaysBetweenBeZero() {
         Date date1 = createDate("01.01.2023");
         Date date2 = createDate("01.01.2023");
-        var daysBetween = dateTimeService.getDaysBetween(createRequestWithAllParameters(date1,date2));
+        TravelCalculatePremiumRequest  request = createRequestWithAllParameters(date1,date2);
+        var daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
         assertEquals(daysBetween, 0L);
     }
 
@@ -26,7 +27,8 @@ public class DateTimeServiceTest {
     public void shouldDaysBetweenBePositive() {
         Date date1 = createDate("01.01.2023");
         Date date2 = createDate("10.01.2023");
-        var daysBetween = dateTimeService.getDaysBetween(createRequestWithAllParameters(date1,date2));
+        TravelCalculatePremiumRequest  request = createRequestWithAllParameters(date1,date2);
+        var daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
         assertEquals(daysBetween, 9L);
     }
 
@@ -34,7 +36,8 @@ public class DateTimeServiceTest {
     public void shouldDaysBetweenBeNegative() {
         Date date1 = createDate("10.01.2023");
         Date date2 = createDate("01.01.2023");
-        var daysBetween = dateTimeService.getDaysBetween(createRequestWithAllParameters(date1,date2));
+        TravelCalculatePremiumRequest  request = createRequestWithAllParameters(date1,date2);
+        var daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
         assertEquals(daysBetween, -9L);
     }
 
