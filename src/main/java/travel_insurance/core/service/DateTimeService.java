@@ -1,7 +1,6 @@
 package travel_insurance.core.service;
 
 import org.springframework.stereotype.Component;
-import org.thymeleaf.context.IContext;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +28,7 @@ public class DateTimeService {
         try {
             date = new SimpleDateFormat("dd.MM.yyyy").parse(stringDate);
         } catch (ParseException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Неправильный формат времени который вы передали . Пример правильного формата : '10.01.2023'.");
         }
         return date;
     }

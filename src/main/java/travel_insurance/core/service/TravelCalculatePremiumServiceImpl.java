@@ -14,8 +14,8 @@ import java.util.List;
 @Component
 public class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
 
-    @Autowired private DateTimeService dateTimeService;
     @Autowired private TravelCalculatePremiumValidator validator;
+    @Autowired private TravelPremiumUnderwriting underwriting;
 
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {
@@ -24,8 +24,8 @@ public class TravelCalculatePremiumServiceImpl implements TravelCalculatePremium
            return new TravelCalculatePremiumResponse(mistakes);
         }
 
-        long daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
-        TravelCalculatePremiumResponse response = new TravelCalculatePremiumResponse(request.getPersonFirstName(),request.getPersonLastName(),dateTimeService.getDateAfterFormatting(request.getAgreementDateFrom()),dateTimeService.getDateAfterFormatting(request.getAgreementDateTo()),new BigDecimal(daysBetween));
+        BigDecimal daysBetween = underwriting.calculatePremium(request);
+        TravelCalculatePremiumResponse response = new TravelCalculatePremiumResponse(request.getPersonFirstName(),request.getPersonLastName(),new DateTimeService().getDateAfterFormatting(request.getAgreementDateFrom()),new DateTimeService().getDateAfterFormatting(request.getAgreementDateTo()),daysBetween);
         return response;
     }
 }

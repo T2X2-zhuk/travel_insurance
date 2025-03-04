@@ -18,6 +18,7 @@ import travel_insurance.core.response.TravelCalculatePremiumResponse;
 import travel_insurance.core.response.ValidationMistake;
 import travel_insurance.core.service.DateTimeService;
 import travel_insurance.core.service.TravelCalculatePremiumServiceImpl;
+import travel_insurance.core.service.TravelPremiumUnderwriting;
 import travel_insurance.core.service.validatorMistakes.TravelCalculatePremiumValidator;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class TravelCalculatePremiumServiceTest {
 
-   @Mock private DateTimeService dateTimeService;
+   @Mock private TravelPremiumUnderwriting underwriting;
     @Mock private TravelCalculatePremiumValidator validator;
 
    @InjectMocks private TravelCalculatePremiumServiceImpl service;
