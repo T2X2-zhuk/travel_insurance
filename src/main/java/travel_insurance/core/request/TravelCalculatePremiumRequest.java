@@ -1,5 +1,6 @@
 package travel_insurance.core.request;
 
+import liquibase.pro.packaged.S;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class TravelCalculatePremiumRequest {
 
     private String personFirstName;
     private String personLastName;
-    private Date agreementDateFrom;
-    private Date agreementDateTo;
+    private String agreementDateFrom;
+    private String agreementDateTo;
 
 }

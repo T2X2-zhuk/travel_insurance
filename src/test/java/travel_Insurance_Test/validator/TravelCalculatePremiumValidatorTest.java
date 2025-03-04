@@ -7,7 +7,6 @@ import travel_insurance.core.request.TravelCalculatePremiumRequest;
 import travel_insurance.core.response.ValidationMistake;
 import travel_insurance.core.service.validatorMistakes.TravelCalculatePremiumValidator;
 
-import java.util.Date;
 import java.util.List;
 
 public class TravelCalculatePremiumValidatorTest {
@@ -27,10 +26,18 @@ public class TravelCalculatePremiumValidatorTest {
         Assertions.assertEquals(mistakes.get(3).getField(), "Agreement Date To");
         Assertions.assertEquals(mistakes.get(3).getMessage(), "Must not be empty");
     }
-
     @Test
-    public void test1NotMistakes(){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker",new Date(),new Date());
+    public void dateFromLessThenDateToMistake(){
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","10.12.2023","01.12.2023");
+        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
+        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
+        Assertions.assertEquals(mistakes.get(0).getField(), "Agreement Date From");
+        Assertions.assertEquals(mistakes.get(0).getMessage(), "Must be less then agreementDateTo!");
+        Assert.assertTrue(!mistakes.isEmpty());
+    }
+    @Test
+    public void NotMistakes(){
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","01.12.2023","03.12.2023");
         TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
         List<ValidationMistake> mistakes = validator.getAllMistakes(request);
         Assert.assertTrue(mistakes.isEmpty());

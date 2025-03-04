@@ -4,10 +4,6 @@ import org.junit.jupiter.api.Test;
 import travel_insurance.core.request.TravelCalculatePremiumRequest;
 import travel_insurance.core.service.DateTimeService;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DateTimeServiceTest {
@@ -16,41 +12,28 @@ public class DateTimeServiceTest {
 
     @Test
     public void shouldDaysBetweenBeZero() {
-        Date date1 = createDate("01.01.2023");
-        Date date2 = createDate("01.01.2023");
-        TravelCalculatePremiumRequest  request = createRequestWithAllParameters(date1,date2);
+        String date1 = "01.01.2023";
+        String date2 = "01.01.2023";
+        var request = new TravelCalculatePremiumRequest("John","SILVER",date1,date2);
         var daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
         assertEquals(daysBetween, 0L);
     }
 
     @Test
     public void shouldDaysBetweenBePositive() {
-        Date date1 = createDate("01.01.2023");
-        Date date2 = createDate("10.01.2023");
-        TravelCalculatePremiumRequest  request = createRequestWithAllParameters(date1,date2);
+        String date1 = "01.01.2023";
+        String date2 = "10.01.2023";
+        var request = new TravelCalculatePremiumRequest("John","SILVER",date1,date2);
         var daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
         assertEquals(daysBetween, 9L);
     }
 
     @Test
     public void shouldDaysBetweenBeNegative() {
-        Date date1 = createDate("10.01.2023");
-        Date date2 = createDate("01.01.2023");
-        TravelCalculatePremiumRequest  request = createRequestWithAllParameters(date1,date2);
+        String date1 = "10.01.2023";
+        String date2 = "01.01.2023";
+        var request = new TravelCalculatePremiumRequest("John","SILVER",date1,date2);
         var daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
         assertEquals(daysBetween, -9L);
-    }
-
-    private Date createDate(String dateStr) {
-        try {
-            return new SimpleDateFormat("dd.MM.yyyy").parse(dateStr);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private TravelCalculatePremiumRequest createRequestWithAllParameters(Date dateFrom,Date dateTo){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("John","SILVER",dateFrom,dateTo);
-        return request;
     }
 }

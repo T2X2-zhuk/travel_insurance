@@ -19,14 +19,9 @@ import travel_insurance.core.response.ValidationMistake;
 import travel_insurance.core.service.DateTimeService;
 import travel_insurance.core.service.TravelCalculatePremiumServiceImpl;
 import travel_insurance.core.service.validatorMistakes.TravelCalculatePremiumValidator;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +34,7 @@ public class TravelCalculatePremiumServiceTest {
 
    @Test
     public void shouldPopulatePersonFirstNameIsNotValid() {
-       TravelCalculatePremiumRequest request = createRequestWithAllFields(null,"Gareb","01.01.2023","01.01.2023");
+       TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(null,"Gareb","01.01.2023","01.01.2023");
 
         var validationError = new ValidationMistake("field", "message");
 
@@ -50,7 +45,7 @@ public class TravelCalculatePremiumServiceTest {
 
     @Test
     public void shouldPopulatePersonLastName() {
-        TravelCalculatePremiumRequest request = createRequestWithAllFields("gsrreea",null,"01.01.2023","01.01.2023");;
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("gsrreea",null,"01.01.2023","01.01.2023");;
 
         var validationError = new ValidationMistake("field", "message");
 
@@ -62,29 +57,14 @@ public class TravelCalculatePremiumServiceTest {
     @Test
     public void shouldPopulateAgreementDateFrom() {
 
-        TravelCalculatePremiumRequest request = createRequestWithAllFields(null,null,"01.01.2023","10.01.2023");;
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(null,null,"12.01.2023","10.01.2023");;
 
         var validationError = new ValidationMistake("field", "message");
         var validationError2 = new ValidationMistake("field", "message");
-        when(validator.getAllMistakes(request)).thenReturn(List.of(validationError,validationError2));
+        var validationError3 = new ValidationMistake("field", "message");
+        when(validator.getAllMistakes(request)).thenReturn(List.of(validationError,validationError2,validationError3));
         var response = service.calculatePremium(request);
         assertTrue(response.hasErrors());
-    }
-
-    private TravelCalculatePremiumRequest createRequestWithAllFields(String person1Name, String person2Name, String dateFrom,String dateTo)  {
-        Date formatFrom = null;
-        try {
-            formatFrom = new SimpleDateFormat("dd.MM.yyyy").parse(dateFrom);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        Date formatTo = null;
-        try {
-            formatTo = new SimpleDateFormat("dd.MM.yyyy").parse(dateTo);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return new TravelCalculatePremiumRequest(person1Name,person2Name,formatFrom,formatTo);
     }
 
 }

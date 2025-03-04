@@ -23,14 +23,9 @@ public class TravelCalculatePremiumServiceImpl implements TravelCalculatePremium
         if (!mistakes.isEmpty()){
            return new TravelCalculatePremiumResponse(mistakes);
         }
-       TravelCalculatePremiumResponse response = new TravelCalculatePremiumResponse();
-        long daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
-        response.setPersonFirstName(request.getPersonFirstName());
-        response.setPersonLastName(request.getPersonLastName());
-        response.setAgreementDateFrom(request.getAgreementDateFrom());
-        response.setAgreementDateTo(request.getAgreementDateTo());
-        response.setAgreementPrice(new BigDecimal(daysBetween));
 
+        long daysBetween = dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo());
+        TravelCalculatePremiumResponse response = new TravelCalculatePremiumResponse(request.getPersonFirstName(),request.getPersonLastName(),dateTimeService.getDateAfterFormatting(request.getAgreementDateFrom()),dateTimeService.getDateAfterFormatting(request.getAgreementDateTo()),new BigDecimal(daysBetween));
         return response;
     }
 }
