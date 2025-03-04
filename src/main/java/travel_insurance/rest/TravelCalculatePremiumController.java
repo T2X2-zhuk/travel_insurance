@@ -9,8 +9,6 @@ import travel_insurance.core.jpa.TravelCalculatePremiumService;
 import travel_insurance.core.request.TravelCalculatePremiumRequest;
 import travel_insurance.core.response.TravelCalculatePremiumResponse;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/insurance/travel")
 public class TravelCalculatePremiumController {

@@ -11,19 +11,11 @@ repositories {
 
 dependencies {
 
-    implementation('org.springframework.boot:spring-boot-starter-data-jpa:2.7.5') {
-        exclude (group: 'ch.qos.logback', module: 'logback-classic')
-    }
     implementation('org.springframework.boot:spring-boot-starter-web:2.7.5') {
         exclude (group: 'ch.qos.logback', module: 'logback-classic')
     }
-    implementation('org.springframework.boot:spring-boot-starter-thymeleaf:2.7.5') {
-        exclude (group: 'ch.qos.logback', module: 'logback-classic')
-    }
 
-    implementation('org.springframework.boot:spring-boot-starter-tomcat:2.7.5') {
-        exclude (group: 'ch.qos.logback', module: 'logback-classic')
-    }
+    implementation('com.fasterxml.jackson.core:jackson-core:2.14.2')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test:2.7.5')
 
@@ -38,6 +30,7 @@ dependencies {
     testCompileOnly('org.projectlombok:lombok:1.18.24')
     testAnnotationProcessor('org.projectlombok:lombok:1.18.24')
 
+    testImplementation('org.hamcrest:hamcrest:2.2')
     testImplementation('junit:junit:4.13.1')
     testImplementation('org.mockito:mockito-core:3.6.0')
     testImplementation('org.springframework:spring-test:5.3.23')
