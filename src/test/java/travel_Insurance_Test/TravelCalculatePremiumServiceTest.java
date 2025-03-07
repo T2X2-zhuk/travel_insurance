@@ -29,7 +29,7 @@ public class TravelCalculatePremiumServiceTest {
 
         var validationError = new ValidationMistake("field", "message");
 
-       when(validator.getAllMistakes(request)).thenReturn(List.of(validationError));
+       when(validator.validate(request)).thenReturn(List.of(validationError));
        var response = service.calculatePremium(request);
        assertTrue(response.hasErrors());
     }
@@ -40,7 +40,7 @@ public class TravelCalculatePremiumServiceTest {
 
         var validationError = new ValidationMistake("field", "message");
 
-        when(validator.getAllMistakes(request)).thenReturn(List.of(validationError));
+        when(validator.validate(request)).thenReturn(List.of(validationError));
         var response = service.calculatePremium(request);
         assertTrue(response.hasErrors());
     }
@@ -53,7 +53,7 @@ public class TravelCalculatePremiumServiceTest {
         var validationError = new ValidationMistake("field", "message");
         var validationError2 = new ValidationMistake("field", "message");
         var validationError3 = new ValidationMistake("field", "message");
-        when(validator.getAllMistakes(request)).thenReturn(List.of(validationError,validationError2,validationError3));
+        when(validator.validate(request)).thenReturn(List.of(validationError,validationError2,validationError3));
         var response = service.calculatePremium(request);
         assertTrue(response.hasErrors());
     }

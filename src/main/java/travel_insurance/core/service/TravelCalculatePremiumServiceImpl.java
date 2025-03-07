@@ -18,11 +18,10 @@ public class TravelCalculatePremiumServiceImpl implements TravelCalculatePremium
 
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {
-        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
+        List<ValidationMistake> mistakes = validator.validate(request);
         if (!mistakes.isEmpty()){
            return new TravelCalculatePremiumResponse(mistakes);
         }
-
         BigDecimal daysBetween = underwriting.calculatePremium(request);
         TravelCalculatePremiumResponse response = new TravelCalculatePremiumResponse(request.getPersonFirstName(),
                 request.getPersonLastName(),new DateTimeService().getDateAfterFormatting(request.getAgreementDateFrom()),

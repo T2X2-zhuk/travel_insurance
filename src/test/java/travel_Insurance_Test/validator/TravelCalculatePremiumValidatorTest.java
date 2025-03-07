@@ -1,66 +1,53 @@
 package travel_Insurance_Test.validator;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import travel_insurance.core.request.TravelCalculatePremiumRequest;
 import travel_insurance.core.response.ValidationMistake;
 import travel_insurance.core.service.validatorMistakes.TravelCalculatePremiumValidator;
+import travel_insurance.core.service.validatorMistakes.validationsTravelCalculatePremiumValidator.TravelRequestValidation;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+@ExtendWith(MockitoExtension.class)
 public class TravelCalculatePremiumValidatorTest {
 
 
+    @InjectMocks private TravelCalculatePremiumValidator requestValidator;
     @Test
-    public void test1NotValidPersonFirstName(){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(null,null,null,null);
-        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
-        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
-        Assertions.assertEquals(mistakes.get(0).getField(), "Person first name");
-        Assertions.assertEquals(mistakes.get(0).getMessage(), "Must not be empty");
-        Assertions.assertEquals(mistakes.get(1).getField(), "Person last name");
-        Assertions.assertEquals(mistakes.get(1).getMessage(), "Must not be empty");
-        Assertions.assertEquals(mistakes.get(2).getField(), "Agreement Date From");
-        Assertions.assertEquals(mistakes.get(2).getMessage(), "Must not be empty");
-        Assertions.assertEquals(mistakes.get(3).getField(), "Agreement Date To");
-        Assertions.assertEquals(mistakes.get(3).getMessage(), "Must not be empty");
-    }
-    @Test
-    public void dateFromLessThenDateToMistake(){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","10.12.2023","01.12.2023");
-        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
-        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
-        Assertions.assertEquals(mistakes.get(0).getField(), "Agreement Date From");
-        Assertions.assertEquals(mistakes.get(0).getMessage(), "Must be less then agreementDateTo!");
-        Assert.assertTrue(!mistakes.isEmpty());
-    }
-    @Test
-    public void NotMistakes(){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","26.03.2025","18.03.2100");
-        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
-        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
-        Assert.assertTrue(mistakes.isEmpty());
+    public void shouldNotReturnErrors() {
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        TravelRequestValidation validation1 = mock(TravelRequestValidation.class);
+        when(validation1.execute(request)).thenReturn(Optional.empty());
+        TravelRequestValidation validation2 = mock(TravelRequestValidation.class);
+        when(validation2.execute(request)).thenReturn(Optional.empty());
+        List<TravelRequestValidation> travelValidations = List.of(
+                validation1, validation2
+        );
+        ReflectionTestUtils.setField(requestValidator, "travelValidations", travelValidations);
+        List<ValidationMistake> errors = requestValidator.validate(request);
+        assertTrue(errors.isEmpty());
     }
 
     @Test
-    public void validateDateFromInFutureTest(){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","02.01.2025","10.04.2090");
-        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
-        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
-        Assertions.assertEquals(mistakes.get(0).getField(), "Agreement Date From");
-        Assertions.assertEquals(mistakes.get(0).getMessage(), "Must be in the future!");
-
-    }
-
-    @Test
-    public void testValidateDateToInFuture(){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","10.10.2020","01.12.2023");
-        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
-        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
-        Assertions.assertEquals(mistakes.get(0).getField(), "Agreement Date From");
-        Assertions.assertEquals(mistakes.get(0).getMessage(), "Must be in the future!");
-        Assertions.assertEquals(mistakes.get(1).getField(), "Agreement Date To");
-        Assertions.assertEquals(mistakes.get(1).getMessage(), "Must be in the future!");
+    public void shouldReturnErrors() {
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        TravelRequestValidation validation1 = mock(TravelRequestValidation.class);
+        when(validation1.execute(request)).thenReturn(Optional.of(new ValidationMistake()));
+        TravelRequestValidation validation2 = mock(TravelRequestValidation.class);
+        when(validation2.execute(request)).thenReturn(Optional.of(new ValidationMistake()));
+        List<TravelRequestValidation> travelValidations = List.of(
+                validation1, validation2
+        );
+        ReflectionTestUtils.setField(requestValidator, "travelValidations", travelValidations);
+        List<ValidationMistake> errors = requestValidator.validate(request);
+        assertEquals(errors.size(), 2);
     }
 }
