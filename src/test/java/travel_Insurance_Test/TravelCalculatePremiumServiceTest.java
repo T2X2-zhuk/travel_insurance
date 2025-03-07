@@ -1,27 +1,17 @@
 package travel_Insurance_Test;
 
 
-import liquibase.pro.packaged.W;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import travel_insurance.core.request.TravelCalculatePremiumRequest;
-import travel_insurance.core.response.TravelCalculatePremiumResponse;
 import travel_insurance.core.response.ValidationMistake;
-import travel_insurance.core.service.DateTimeService;
 import travel_insurance.core.service.TravelCalculatePremiumServiceImpl;
 import travel_insurance.core.service.TravelPremiumUnderwriting;
 import travel_insurance.core.service.validatorMistakes.TravelCalculatePremiumValidator;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 

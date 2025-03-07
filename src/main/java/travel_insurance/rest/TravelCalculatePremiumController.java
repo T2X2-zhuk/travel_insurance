@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import travel_insurance.core.jpa.TravelCalculatePremiumService;
+import travel_insurance.core.service.TravelCalculatePremiumService;
 import travel_insurance.core.request.TravelCalculatePremiumRequest;
 import travel_insurance.core.response.TravelCalculatePremiumResponse;
 

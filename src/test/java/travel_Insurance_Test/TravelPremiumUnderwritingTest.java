@@ -1,6 +1,6 @@
 package travel_Insurance_Test;
 
-import org.junit.Assert;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,7 +27,7 @@ public class TravelPremiumUnderwritingTest {
        when(dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo())).thenReturn(2L);
        BigDecimal decimal = underwriting.calculatePremium(request);
 
-       Assert.assertEquals(BigDecimal.valueOf(2L),decimal);
+       org.junit.Assert.assertEquals(BigDecimal.valueOf(2L),decimal);
    }
 
     @Test
@@ -36,6 +36,6 @@ public class TravelPremiumUnderwritingTest {
         when(dateTimeService.getDaysBetween(request.getAgreementDateFrom(),request.getAgreementDateTo())).thenReturn(-7L);
         BigDecimal decimal = underwriting.calculatePremium(request);
 
-        Assert.assertEquals(BigDecimal.valueOf(-7L),decimal);
+        org.junit.Assert.assertEquals(BigDecimal.valueOf(-7L),decimal);
     }
 }
