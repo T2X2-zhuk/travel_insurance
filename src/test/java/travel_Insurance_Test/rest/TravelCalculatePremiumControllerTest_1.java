@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = InsuranceApplication.class)
 @AutoConfigureMockMvc
-
 public class TravelCalculatePremiumControllerTest_1 {
 
     @Autowired

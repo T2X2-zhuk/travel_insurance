@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 @Component
@@ -31,6 +33,12 @@ public class DateTimeService {
             throw new RuntimeException("Неправильный формат времени который вы передали . Пример правильного формата : '10.01.2023'.");
         }
         return date;
+    }
+
+    public Date getCurrentDateTime() {
+        ZoneId zone = ZoneId.of("Europe/Riga");
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(zone);
+        return Date.from(zonedDateTime.toInstant());
     }
 
 }

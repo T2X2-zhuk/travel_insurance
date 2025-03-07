@@ -25,7 +25,7 @@ public class TravelCalculatePremiumServiceTest {
 
    @Test
     public void shouldPopulatePersonFirstNameIsNotValid() {
-       TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(null,"Gareb","01.01.2023","01.01.2023");
+       TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(null,"Gareb","05.10.2050","01.01.2100");
 
         var validationError = new ValidationMistake("field", "message");
 
@@ -36,7 +36,7 @@ public class TravelCalculatePremiumServiceTest {
 
     @Test
     public void shouldPopulatePersonLastName() {
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("gsrreea",null,"01.01.2023","01.01.2023");;
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("gsrreea",null,"05.10.2050","01.01.2100");;
 
         var validationError = new ValidationMistake("field", "message");
 
@@ -48,7 +48,7 @@ public class TravelCalculatePremiumServiceTest {
     @Test
     public void shouldPopulateAgreementDateFrom() {
 
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(null,null,"12.01.2023","10.01.2023");;
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(null,null,"12.01.2090","10.01.2090");;
 
         var validationError = new ValidationMistake("field", "message");
         var validationError2 = new ValidationMistake("field", "message");

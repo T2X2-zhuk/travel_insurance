@@ -37,10 +37,30 @@ public class TravelCalculatePremiumValidatorTest {
     }
     @Test
     public void NotMistakes(){
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","01.12.2023","03.12.2023");
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","26.03.2025","18.03.2100");
         TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
         List<ValidationMistake> mistakes = validator.getAllMistakes(request);
         Assert.assertTrue(mistakes.isEmpty());
     }
 
+    @Test
+    public void validateDateFromInFutureTest(){
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","02.01.2025","10.04.2090");
+        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
+        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
+        Assertions.assertEquals(mistakes.get(0).getField(), "Agreement Date From");
+        Assertions.assertEquals(mistakes.get(0).getMessage(), "Must be in the future!");
+
+    }
+
+    @Test
+    public void testValidateDateToInFuture(){
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest("Haper","Jocker","10.10.2020","01.12.2023");
+        TravelCalculatePremiumValidator validator = new TravelCalculatePremiumValidator();
+        List<ValidationMistake> mistakes = validator.getAllMistakes(request);
+        Assertions.assertEquals(mistakes.get(0).getField(), "Agreement Date From");
+        Assertions.assertEquals(mistakes.get(0).getMessage(), "Must be in the future!");
+        Assertions.assertEquals(mistakes.get(1).getField(), "Agreement Date To");
+        Assertions.assertEquals(mistakes.get(1).getMessage(), "Must be in the future!");
+    }
 }
