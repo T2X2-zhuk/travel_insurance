@@ -1,0 +1,17 @@
+{
+  "personFirstName": "Vasja",
+  "personLastName": "Pupkin",
+  "personCode" : "123456-12345",
+  "personBirthDate": "2000-05-29",
+  "agreementDateFrom" : "2031-05-25",
+  "agreementDateTo" : "2035-05-29",
+  "country": "SPAIN",
+  "medicalRiskLimitLevel" : "LEVEL_10000",
+  "agreementPremium": 4028.75,
+  "risks": [
+      {
+        "riskIc": "TRAVEL_MEDICAL",
+        "premium": 4028.75
+      }
+  ]
+}
