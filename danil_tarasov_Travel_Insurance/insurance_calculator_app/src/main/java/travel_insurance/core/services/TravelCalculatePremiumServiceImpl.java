@@ -23,15 +23,27 @@ import java.util.List;
 class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
 
     @Autowired private TravelAgreementValidator agreementValidator;
-    @Autowired private TravelPremiumUnderwriting premiumUnderwriting;
+    @Autowired private AgreementPersonsPremiumCalculator agreementPersonsPremiumCalculator;
+    @Autowired private AgreementTotalPremiumCalculator agreementTotalPremiumCalculator;
+
     @Autowired private AgreementEntityFactory agreementEntityFactory;
 
     @Override
     public TravelCalculatePremiumCoreResult calculatePremium(TravelCalculatePremiumCoreCommand command) {
         List<ValidationErrorDTO> errors = agreementValidator.validate(command.getAgreement());
-        return errors.isEmpty()
-                ? buildResponse(command.getAgreement())
-                : buildResponse(errors);
+        if (errors.isEmpty()) {
+            calculatePremium(command.getAgreement());
+            AgreementEntity agreement = agreementEntityFactory.createAgreementEntity(command.getAgreement());
+            command.getAgreement().setUuid(agreement.getUuid());
+            return buildResponse(command.getAgreement());
+        } else {
+            return buildResponse(errors);
+        }
+    }
+
+    private void calculatePremium(AgreementDTO agreement) {
+        agreementPersonsPremiumCalculator.calculateRiskPremiums(agreement);
+        agreement.setAgreementPremium(agreementTotalPremiumCalculator.calculate(agreement));
     }
 
     private TravelCalculatePremiumCoreResult buildResponse(List<ValidationErrorDTO> errors) {
@@ -39,32 +51,7 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
     }
 
     private TravelCalculatePremiumCoreResult buildResponse(AgreementDTO agreement) {
-        calculateRiskPremiumsForAllPersons(agreement);
-
-        BigDecimal totalAgreementPremium = calculateTotalAgreementPremium(agreement);
-        agreement.setAgreementPremium(totalAgreementPremium);
-
-        AgreementEntity agreementEntity = agreementEntityFactory.createAgreementEntity(agreement);
-        agreement.setUuid(agreementEntity.getUuid());
-
-        TravelCalculatePremiumCoreResult coreResult = new TravelCalculatePremiumCoreResult();
-        coreResult.setAgreement(agreement);
-        return coreResult;
-    }
-
-    private void calculateRiskPremiumsForAllPersons(AgreementDTO agreement) {
-        agreement.getPersons().forEach(person -> {
-            TravelPremiumCalculationResult calculationResult = premiumUnderwriting.calculatePremium(agreement, person);
-            person.setRisks(calculationResult.getRisks());
-        });
-    }
-
-    private BigDecimal calculateTotalAgreementPremium(AgreementDTO agreement) {
-        return agreement.getPersons().stream()
-                .map(PersonDTO::getRisks)
-                .flatMap(Collection::stream)
-                .map(RiskDTO::getPremium)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return new TravelCalculatePremiumCoreResult(null, agreement);
     }
 
 }
