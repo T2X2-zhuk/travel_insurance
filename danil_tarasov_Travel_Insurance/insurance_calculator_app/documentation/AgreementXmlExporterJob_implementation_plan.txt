@@ -42,3 +42,13 @@ uuid будем получать данные агримента из базы �
 
 10. Реализуем включалку/выключалку для джоба через свойство в
 application.properties.
+
+#-spring.profiles.active=h2
+#-spring.profiles.active=mysql-local
+#-spring.profiles.active=mysql-container
+
+#./gradlew docker
+#docker container create --name insurance-calculator -p 8080:8080  insurance-calculator:1.0.4
+#docker container start insurance-calculator -i
+#docker pull mysql:8.0
+#docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=fkmdbyjdbx383 -e MYSQL_DATABASE=insurance-calc-db -p 3000:3306 -d mysql:8.0
