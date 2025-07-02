@@ -10,8 +10,8 @@ import travel_insurance.core.api.dto.PersonDTO;
 import travel_insurance.core.api.dto.RiskDTO;
 import travel_insurance.core.api.dto.ValidationErrorDTO;
 import travel_insurance.core.domain.entity.AgreementEntity;
-import travel_insurance.core.underwriting.TravelPremiumCalculationResult;
-import travel_insurance.core.underwriting.TravelPremiumUnderwriting;
+
+import travel_insurance.core.messagebroker.proposal.ProposalGeneratorQueueSender;
 import travel_insurance.core.validations.TravelAgreementValidator;
 
 import java.math.BigDecimal;
@@ -26,6 +26,7 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
     @Autowired private AgreementPersonsPremiumCalculator agreementPersonsPremiumCalculator;
     @Autowired private AgreementTotalPremiumCalculator agreementTotalPremiumCalculator;
 
+    @Autowired private ProposalGeneratorQueueSender proposalGeneratorQueueSender;
     @Autowired private AgreementEntityFactory agreementEntityFactory;
 
     @Override
@@ -35,6 +36,7 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
             calculatePremium(command.getAgreement());
             AgreementEntity agreement = agreementEntityFactory.createAgreementEntity(command.getAgreement());
             command.getAgreement().setUuid(agreement.getUuid());
+            proposalGeneratorQueueSender.send(command.getAgreement());
             return buildResponse(command.getAgreement());
         } else {
             return buildResponse(errors);

@@ -1,4 +1,5 @@
 rootProject.name = 'travel_insurance'
 
 include 'danil_tarasov_Travel_Insurance:insurance_calculator_app'
+include 'danil_tarasov_Travel_Insurance:doc-generator-app'
 

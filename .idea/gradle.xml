@@ -13,6 +13,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/danil_tarasov_Travel_Insurance" />
+            <option value="$PROJECT_DIR$/danil_tarasov_Travel_Insurance/doc-generator-app" />
             <option value="$PROJECT_DIR$/danil_tarasov_Travel_Insurance/insurance_calculator_app" />
           </set>
         </option>
