@@ -2,4 +2,9 @@ rootProject.name = 'travel_insurance'
 
 include 'danil_tarasov_Travel_Insurance:insurance_calculator_app'
 include 'danil_tarasov_Travel_Insurance:doc-generator-app'
+include 'danil_tarasov_Travel_Insurance:black-list-app'
+include 'danil_tarasov_Travel_Insurance:elk'
+include 'danil_tarasov_Travel_Insurance:elk:filebeat'
+include 'danil_tarasov_Travel_Insurance:elk:logstash'
+include 'danil_tarasov_Travel_Insurance:elk:metricbeat'
 
